@@ -1,0 +1,12 @@
+name: Make Keystore
+on: workflow_dispatch
+jobs:
+  k:
+    runs-on: ubuntu-latest
+    steps:
+      - run: keytool -genkeypair -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+      - run: keytool -list -v -keystore debug.keystore -storepass android | grep SHA1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: debug-keystore
+          path: debug.keystore
